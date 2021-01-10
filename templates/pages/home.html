@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+Welcome to Thoughter
+
+<div id='thoughts'>
+    Loading...
+</div>
+
+
+<script>
+const thoughtsElement = document.getElementById("thoughts")
+
+//thoughtsElement.innerHTML = 'Loading...'
+//var el1 = "<h2>Hi there 1</h2>"
+//thoughtsElement.innerHTML = el1
+
+const xhr = new XMLHttpRequest()
+const method = 'GET'
+const url = '/thoughts'
+const responseType = 'json'
+
+xhr.responseType = responseType
+xhr.open(method, url)
+xhr.onload = function() {
+    console.log(xhr.response)
+    const serverResponse = xhr.response
+    const listedItems = serverResponse.response
+    var finalThoughtStr = ""
+    var i;
+    for (i=0;i<listedItems.length; i++) {
+        console.log(i)
+        console.log(listedItems[i])
+        var currentItem = "<div class='mb-4'><h4>" + listedItems[i].id + "</h4>" + "<p>" + listedItems[i].content + "</p></div>"
+        finalThoughtStr += currentItem
+    }
+    thoughtsElement.innerHTML = finalThoughtStr
+}
+xhr.send()
+
+
+</script>
+
+{% endblock content %}
